@@ -9,6 +9,7 @@ package codes.laser.ppmtool.controller;
 import codes.laser.ppmtool.model.User;
 import codes.laser.ppmtool.payload.JWTLoginSuccessResponse;
 import codes.laser.ppmtool.payload.LoginRequest;
+import codes.laser.ppmtool.pojo.UserRegistrationPojo;
 import codes.laser.ppmtool.security.JWTTokenProvider;
 import codes.laser.ppmtool.services.MapValidationErrorService;
 import codes.laser.ppmtool.services.UserService;
@@ -62,7 +63,7 @@ public class UserController {
     }
 
 
-    @PostMapping("/register")
+/*    @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody User user, BindingResult result) {
         //validate password match
         userValidator.validate(user, result);
@@ -73,5 +74,38 @@ public class UserController {
 
         User newUser = userService.saveUser(user);
         return new ResponseEntity<User>(newUser, HttpStatus.CREATED);
+    }*/
+
+
+    //register for leader
+    @PostMapping("/register-leader")
+    public ResponseEntity<?> registerAsLeader(@Valid @RequestBody UserRegistrationPojo userRegistrationPojo) {
+        //validate password match
+
+        if(userRegistrationPojo.getPassword().equals(userRegistrationPojo.getConfirmPassword()))
+        {
+            User newUser = userService.saveUserAsLeader(userRegistrationPojo);
+            return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+        }
+        else
+            return new ResponseEntity<>("Confirm Password Must Matched", HttpStatus.BAD_REQUEST);
+
     }
+
+    //register for developer
+
+    @PostMapping("/register-developer")
+    public ResponseEntity<?> registerAsDeveloper(@Valid @RequestBody UserRegistrationPojo userRegistrationPojo) {
+        //validate password match
+
+        if(userRegistrationPojo.getPassword().equals(userRegistrationPojo.getConfirmPassword()))
+        {
+            User newUser = userService.saveUserAsDeveloper(userRegistrationPojo);
+            return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+        }
+        else
+            return new ResponseEntity<>("Confirm Password Must Matched", HttpStatus.BAD_REQUEST);
+
+    }
+
 }

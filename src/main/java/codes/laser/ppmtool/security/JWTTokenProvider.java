@@ -34,6 +34,7 @@ public class JWTTokenProvider {
         claims.put("id", (Long.toString(user.getId())));
         claims.put("username", user.getUsername());
         claims.put("fullName", user.getFullName());
+        claims.put("role",user.getRole());
 
         return Jwts.builder()
                 .setSubject(userId)

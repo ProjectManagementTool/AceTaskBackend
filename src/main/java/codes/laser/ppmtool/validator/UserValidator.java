@@ -7,6 +7,7 @@
 package codes.laser.ppmtool.validator;
 
 import codes.laser.ppmtool.model.User;
+import codes.laser.ppmtool.pojo.UserRegistrationPojo;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -17,7 +18,7 @@ public class UserValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> aClass) {
-        return User.class.equals(aClass);
+        return UserRegistrationPojo.class.equals(aClass);
     }
 
     @Override
@@ -32,4 +33,5 @@ public class UserValidator implements Validator {
         }
 
     }
+
 }

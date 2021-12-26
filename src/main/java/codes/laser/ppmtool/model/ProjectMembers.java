@@ -1,12 +1,13 @@
 package codes.laser.ppmtool.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
-
+import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Data
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class ProjectMembers {
 
@@ -14,11 +15,11 @@ public class ProjectMembers {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "userid")
     private User user;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "projectid")
     private Project project;
 

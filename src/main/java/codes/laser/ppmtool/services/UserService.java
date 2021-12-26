@@ -7,7 +7,9 @@
 package codes.laser.ppmtool.services;
 
 import codes.laser.ppmtool.exceptions.UsernameAlreadyExistsException;
+import codes.laser.ppmtool.model.Role;
 import codes.laser.ppmtool.model.User;
+import codes.laser.ppmtool.pojo.UserRegistrationPojo;
 import codes.laser.ppmtool.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,24 +23,45 @@ public class UserService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public User saveUser(User newUser) {
-
-        try {
-            newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
-
+    //save as leader
+    public User saveUserAsLeader(UserRegistrationPojo userRegistrationPojo) {
+        User userFromDB = userRepository.findByUsername(userRegistrationPojo.getUsername());
+        if (userFromDB == null) {
+            User user = new User();
+            user.setPassword(bCryptPasswordEncoder.encode(userRegistrationPojo.getPassword()));
             //Username has to be unique(exception)
-            newUser.setUsername(newUser.getUsername());
-
+            user.setUsername(userRegistrationPojo.getUsername());
             //Make sure that password and confirm password match
             //We don't persist or show the confirmPassword
-
-            newUser.setConfirmPassword("");
-
-            return userRepository.save(newUser);
-        } catch (Exception e) {
-            throw new UsernameAlreadyExistsException("Username'" + newUser.getUsername() + "'already exists");
+            user.setConfirmPassword("");
+            user.setLeader(true);
+            user.setRole(Role.LEADER);
+            user.setFullName(userRegistrationPojo.getFullName());
+            return userRepository.save(user);
+        } else {
+            throw new UsernameAlreadyExistsException("Username '" + userRegistrationPojo.getUsername() + "' already exists");
         }
+
     }
 
+    //save as developer
+    public User saveUserAsDeveloper(UserRegistrationPojo userRegistrationPojo) {
+        User userFromDB = userRepository.findByUsername(userRegistrationPojo.getUsername());
+        if (userFromDB == null) {
+            User user = new User();
+            user.setPassword(bCryptPasswordEncoder.encode(userRegistrationPojo.getPassword()));
+            //Username has to be unique(exception)
+            user.setUsername(userRegistrationPojo.getUsername());
+            //Make sure that password and confirm password match
+            //We don't persist or show the confirmPassword
+            user.setConfirmPassword("");
+            user.setLeader(false);
+            user.setRole(Role.DEVELOPER);
+            user.setFullName(userRegistrationPojo.getFullName());
+            return userRepository.save(user);
+        } else {
+            throw new UsernameAlreadyExistsException("Username '" + userRegistrationPojo.getUsername() + "' already exists");
+        }
 
+    }
 }
