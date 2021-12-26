@@ -8,25 +8,40 @@ package codes.laser.ppmtool.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Entity
+@Data
 public class ProjectTask {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(updatable = false, unique = true)
     private String projectSequence;
+
     @NotBlank(message = "Please include a project summary")
     private String summary;
+
     private String acceptanceCriteria;
+
     private String status;
+
     private Integer priority;
+
+    private Complexity complexity;
+
+    private Integer assignee;
+
+
     @JsonFormat(pattern = "yyyy-mm-dd")
     private Date dueDate;
+
+
     //ManyToOne with Backlog
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "backlog_id", updatable = false, nullable = false)
@@ -39,6 +54,7 @@ public class ProjectTask {
 
     @JsonFormat(pattern = "yyyy-mm-dd")
     private Date created_At;
+
     @JsonFormat(pattern = "yyyy-mm-dd")
     private Date updated_At;
 
