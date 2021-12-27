@@ -29,7 +29,7 @@ public class ProjectTask {
 
     private String acceptanceCriteria;
 
-    private String status;
+    private Status status;
 
     private Integer priority;
 
@@ -98,12 +98,28 @@ public class ProjectTask {
         this.acceptanceCriteria = acceptanceCriteria;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Complexity getComplexity() {
+        return complexity;
+    }
+
+    public void setComplexity(Complexity complexity) {
+        this.complexity = complexity;
+    }
+
+    public Integer getAssignee() {
+        return assignee;
+    }
+
+    public void setAssignee(Integer assignee) {
+        this.assignee = assignee;
     }
 
     public Integer getPriority() {

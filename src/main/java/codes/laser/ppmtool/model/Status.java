@@ -1,12 +1,14 @@
 package codes.laser.ppmtool.model;
 
-public enum Complexity {
+public enum Status {
 
-    EASY(0),MEDIUM(1),COMPLEX(2);
+    TO_DO(0),
+    PROGRESS(1),
+    COMPLETED(2);
 
     private Integer value;
 
-    Complexity(Integer value) {
+    Status(Integer value) {
         this.value = value;
     }
 }

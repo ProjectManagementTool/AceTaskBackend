@@ -10,6 +10,7 @@ import codes.laser.ppmtool.exceptions.ProjectNotFoundException;
 import codes.laser.ppmtool.model.Backlog;
 import codes.laser.ppmtool.model.Project;
 import codes.laser.ppmtool.model.ProjectTask;
+import codes.laser.ppmtool.model.Status;
 import codes.laser.ppmtool.repositories.BacklogRepository;
 import codes.laser.ppmtool.repositories.ProjectRepository;
 import codes.laser.ppmtool.repositories.ProjectTaskRepository;
@@ -52,12 +53,15 @@ public class ProjectTaskService {
         projectTask.setProjectIdentifier(projectIdentifier);
         //Initial priority when priority null
         if (projectTask.getPriority() == 0 || projectTask.getPriority() == null) {//In the future we need projectTask.getPriority()==0 to handle the form
-            projectTask.setPriority(3);
+            projectTask.setPriority(1);
         }
+
         //Initial status when status null
-        if (projectTask.getStatus() == "" || projectTask.getStatus() == null) {
-            projectTask.setStatus("TO_DO");
+        if (projectTask.getStatus() == null) {
+            projectTask.setStatus(Status.TO_DO);
         }
+
+
         return projectTaskRepository.save(projectTask);
 
 
