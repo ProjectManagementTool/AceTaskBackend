@@ -7,7 +7,9 @@
 package codes.laser.ppmtool.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,8 +23,9 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@RequiredArgsConstructor
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,9 +54,11 @@ public class User implements UserDetails {
 
     private boolean isLeader;
 
-    private Role role;
-
     private String skillsDescription;
+
+    @OneToOne
+    @JoinColumn(name = "roleid")
+    private Role role;
 
     public Long getId() {
         return id;

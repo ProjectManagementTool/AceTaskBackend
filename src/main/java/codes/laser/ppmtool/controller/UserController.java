@@ -9,6 +9,7 @@ package codes.laser.ppmtool.controller;
 import codes.laser.ppmtool.model.User;
 import codes.laser.ppmtool.payload.JWTLoginSuccessResponse;
 import codes.laser.ppmtool.payload.LoginRequest;
+import codes.laser.ppmtool.pojo.ProfileUpdatePojo;
 import codes.laser.ppmtool.pojo.UserRegistrationPojo;
 import codes.laser.ppmtool.security.JWTTokenProvider;
 import codes.laser.ppmtool.services.MapValidationErrorService;
@@ -31,8 +32,6 @@ import static codes.laser.ppmtool.security.SecurityConstants.TOKEN_PREFIX;
 
 @RestController
 @RequestMapping("/api/users")
-
-
 public class UserController {
 
     @Autowired
@@ -62,38 +61,27 @@ public class UserController {
         return ResponseEntity.ok(new JWTLoginSuccessResponse(true, jwt));
     }
 
-
-/*    @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody User user, BindingResult result) {
-        //validate password match
-        userValidator.validate(user, result);
-
-        ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
-        if (errorMap != null)
-            return errorMap;
-
-        User newUser = userService.saveUser(user);
-        return new ResponseEntity<User>(newUser, HttpStatus.CREATED);
-    }*/
-
-
     //register for leader
     @PostMapping("/register-leader")
     public ResponseEntity<?> registerAsLeader(@Valid @RequestBody UserRegistrationPojo userRegistrationPojo) {
         //validate password match
 
-        if(userRegistrationPojo.getPassword().equals(userRegistrationPojo.getConfirmPassword()))
-        {
-            User newUser = userService.saveUserAsLeader(userRegistrationPojo);
-            return new ResponseEntity<>(newUser, HttpStatus.CREATED);
-        }
-        else
-            return new ResponseEntity<>("Confirm Password Must Matched", HttpStatus.BAD_REQUEST);
-
+            if(userRegistrationPojo.getPassword().equals(userRegistrationPojo.getConfirmPassword()))
+            {
+                User newUser = userService.saveUserAsLeader(userRegistrationPojo);
+                return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+            }
+            else
+                return new ResponseEntity<>("Confirm Password Must Matched", HttpStatus.BAD_REQUEST);
+    }
+    //update for leader
+    @PostMapping("/update-leader")
+    public ResponseEntity<?> updateLeaderProfile(@Valid @RequestBody ProfileUpdatePojo profileUpdatePojo) {
+        User newUser = userService.updateLeaderProfile(profileUpdatePojo);
+        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
 
     //register for developer
-
     @PostMapping("/register-developer")
     public ResponseEntity<?> registerAsDeveloper(@Valid @RequestBody UserRegistrationPojo userRegistrationPojo) {
         //validate password match
@@ -106,6 +94,13 @@ public class UserController {
         else
             return new ResponseEntity<>("Confirm Password Must Matched", HttpStatus.BAD_REQUEST);
 
+    }
+
+    //update for developers
+    @PostMapping("/update-developer")
+    public ResponseEntity<?> updateDeveloperProfile(@Valid @RequestBody ProfileUpdatePojo profileUpdatePojo) {
+        User newUser = userService.updateDeveloperProfile(profileUpdatePojo);
+        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
 
 }

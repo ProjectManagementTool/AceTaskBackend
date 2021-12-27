@@ -1,5 +1,6 @@
 package codes.laser.ppmtool.pojo;
 
+import codes.laser.ppmtool.model.Designation;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -24,5 +25,6 @@ public class UserRegistrationPojo {
     @Transient
     @NotNull(message = "confirmPassword field is required")
     private String confirmPassword;
+
 
 }
