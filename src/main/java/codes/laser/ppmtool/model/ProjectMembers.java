@@ -16,11 +16,11 @@ public class ProjectMembers {
     private Integer id;
 
     @OneToOne
-    @JoinColumn(name = "userid")
+    @JoinColumn(name = "userid",unique = true)
     private User user;
 
     @OneToOne
-    @JoinColumn(name = "projectid")
+    @JoinColumn(name = "projectid",unique = true)
     private Project project;
 
 }

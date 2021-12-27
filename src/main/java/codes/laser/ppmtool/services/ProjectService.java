@@ -10,12 +10,16 @@ import codes.laser.ppmtool.exceptions.ProjectIDException;
 import codes.laser.ppmtool.exceptions.ProjectNotFoundException;
 import codes.laser.ppmtool.model.Backlog;
 import codes.laser.ppmtool.model.Project;
+import codes.laser.ppmtool.model.ProjectMembers;
 import codes.laser.ppmtool.model.User;
 import codes.laser.ppmtool.repositories.BacklogRepository;
+import codes.laser.ppmtool.repositories.ProjectMembersRepository;
 import codes.laser.ppmtool.repositories.ProjectRepository;
 import codes.laser.ppmtool.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 
 @Service
 public class ProjectService {
@@ -27,8 +31,12 @@ public class ProjectService {
     private BacklogRepository backlogRepository;
 
     @Autowired
+    private ProjectMembersRepository projectMembersRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
+    @Transactional
     public Project saveOrUpdateProject(Project project, String username) {
 
         if (project.getId() != null) {
@@ -43,7 +51,7 @@ public class ProjectService {
         try {
 
             User user = userRepository.findByUsername(username);
-            project.setUser(user);
+            //project.setUser(user);
             project.setProjectLeader(user.getUsername());
             project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
 
@@ -56,7 +64,13 @@ public class ProjectService {
             if (project.getId() != null) {
                 project.setBacklog(backlogRepository.findByProjectIdentifier(project.getProjectIdentifier().toUpperCase()));
             }
+            //also save on the project members table
+            ProjectMembers projectMembers=new ProjectMembers();
+            projectMembers.setProject(project);
+            projectMembers.setUser(user);
+            projectMembersRepository.save(projectMembers);
             return projectRepository.save(project);
+
         } catch (Exception e) {
             throw new ProjectIDException("Project Id '" + project.getProjectIdentifier().toUpperCase() + "'already exists.");
         }
@@ -82,5 +96,6 @@ public class ProjectService {
         projectRepository.delete(findProjectByIdentifier(projectId, username));
 
     }
+
 
 }
