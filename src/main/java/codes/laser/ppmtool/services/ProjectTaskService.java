@@ -11,10 +11,13 @@ import codes.laser.ppmtool.model.Backlog;
 import codes.laser.ppmtool.model.Project;
 import codes.laser.ppmtool.model.ProjectTask;
 import codes.laser.ppmtool.model.Status;
+import codes.laser.ppmtool.pojo.SuccessPercentageResponse;
 import codes.laser.ppmtool.repositories.BacklogRepository;
 import codes.laser.ppmtool.repositories.ProjectRepository;
 import codes.laser.ppmtool.repositories.ProjectTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.support.PageableExecutionUtils;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -106,5 +109,23 @@ public class ProjectTaskService {
 
     }
 
+    public SuccessPercentageResponse calculateSuccessRate(String projectIdentifier)
+    {
+        Integer totalTasks=projectTaskRepository.getTotalProjectTasks(projectIdentifier);
+        Integer totalTODO=projectTaskRepository.getTotalTODOProjectTasks(projectIdentifier);
+        Integer totalPROGRESS=projectTaskRepository.getTotalPROGRESStasks(projectIdentifier);
+        Integer totalCOMPLETED=projectTaskRepository.getTotalCompletedTasks(projectIdentifier);
+
+        double successPercentage;
+        double remainingPercentage;
+
+        successPercentage=(totalTODO*0+totalPROGRESS*50+totalCOMPLETED*100)/totalTasks;
+        remainingPercentage=100-successPercentage;
+
+        SuccessPercentageResponse response=new SuccessPercentageResponse();
+        response.setSuccessPercentage(successPercentage);
+        response.setRemainingPercentage(remainingPercentage);
+        return response;
+    }
 
 }

@@ -10,6 +10,7 @@ import codes.laser.ppmtool.model.Project;
 
 import codes.laser.ppmtool.services.MapValidationErrorService;
 import codes.laser.ppmtool.services.ProjectService;
+import codes.laser.ppmtool.services.ProjectTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,9 @@ import java.security.Principal;
 public class ProjectController {
     @Autowired
     private ProjectService projectService;
+
+    @Autowired
+    private ProjectTaskService projectTaskService;
 
     @Autowired
     private MapValidationErrorService mapValidationErrorService;
@@ -54,6 +58,13 @@ public class ProjectController {
     public ResponseEntity<?> deleteProject(@PathVariable String projectId,Principal principal) {
         projectService.deleteProjectByIdentifier(projectId,principal.getName());
         return new ResponseEntity<String>("Project with ID:'" + projectId + "'was deleted", HttpStatus.OK);
+    }
+
+    //get success percentage
+
+    @GetMapping("/percentage/{projectIdentifier}")
+    public ResponseEntity<?> getSuccessPercentage(@PathVariable String projectIdentifier) {
+        return new ResponseEntity<>( projectTaskService.calculateSuccessRate(projectIdentifier), HttpStatus.OK);
     }
 
 }
