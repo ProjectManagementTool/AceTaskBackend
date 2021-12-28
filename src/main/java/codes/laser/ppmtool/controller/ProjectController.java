@@ -67,4 +67,6 @@ public class ProjectController {
         return new ResponseEntity<>( projectTaskService.calculateSuccessRate(projectIdentifier), HttpStatus.OK);
     }
 
+
+
 }

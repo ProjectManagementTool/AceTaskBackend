@@ -8,6 +8,8 @@ import codes.laser.ppmtool.repositories.ProjectMembersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ProjectMembersService {
@@ -22,6 +24,11 @@ public class ProjectMembersService {
         projectMembers.setProject(new Project(projectMembersPojo.getProjectid()));
         return projectMembersRepository.save(projectMembers);
 
+    }
+
+    public List<ProjectMembers> getAllMembers(Long projectId)
+    {
+        return projectMembersRepository.findALL(projectId);
     }
 
 
