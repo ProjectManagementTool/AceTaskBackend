@@ -9,7 +9,6 @@ public class ProjectMembersPojo {
 
     private Integer id;
 
-    @Column(unique = true)
     private Long userid;
 
     private Long projectid;

@@ -44,11 +44,7 @@ public class UserService {
                 //We don't persist or show the confirmPassword
                 user.setConfirmPassword("");
                 user.setLeader(true);
-
-                Role role=new Role();
-                role.setName(RoleConstants.LEADER);
-                roleRepository.save(role);
-                user.setRole(role);
+                user.setRole(new Role(1));
                 user.setFullName(userRegistrationPojo.getFullName());
                 return userRepository.save(user);
 
@@ -81,14 +77,7 @@ public class UserService {
             //We don't persist or show the confirmPassword
             user.setConfirmPassword("");
             user.setLeader(false);
-
-
-            Role role=new Role();
-            role.setName(RoleConstants.DEVELOPER);
-            roleRepository.save(role);
-            user.setRole(role);
-
-
+            user.setRole(new Role(2));
             user.setFullName(userRegistrationPojo.getFullName());
             return userRepository.save(user);
         } else {

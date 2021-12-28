@@ -1,9 +1,7 @@
 package codes.laser.ppmtool.controller;
 
 import codes.laser.ppmtool.model.ProjectMembers;
-import codes.laser.ppmtool.model.User;
 import codes.laser.ppmtool.pojo.ProjectMembersPojo;
-import codes.laser.ppmtool.pojo.UserRegistrationPojo;
 import codes.laser.ppmtool.services.ProjectMembersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +20,7 @@ public class ProjectMembersController {
     private ProjectMembersService service;
 
     @PostMapping("/add")
-    public ResponseEntity<?> AddMembers(@Valid @RequestBody ProjectMembersPojo projectMembersPojo) {
+    public ResponseEntity<?> AddMembers( @RequestBody ProjectMembersPojo projectMembersPojo) {
 
 
         ProjectMembers members = service.addMembersToProject(projectMembersPojo);

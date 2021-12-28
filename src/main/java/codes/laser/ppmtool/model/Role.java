@@ -20,4 +20,8 @@ public class Role {
     private Integer id;
 
     private String name;
+
+    public Role(Integer id) {
+        this.id = id;
+    }
 }
